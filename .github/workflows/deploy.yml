@@ -1,0 +1,30 @@
+name: Deploy Portfolio
+
+on:
+  push:
+    branches: [ dev ] 
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clone the project
+        uses: actions/checkout@v4
+
+      - name:  Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check npm dependencies
+        run: npm audit --audit-level=moderate
+
+      - name: Build the project
+        run: npm run build
+
+      - name: Check build folder
+        run: test -f dist/index.html
